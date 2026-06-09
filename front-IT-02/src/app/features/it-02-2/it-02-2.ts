@@ -83,7 +83,7 @@ export class It022 implements OnInit {
         alert('สมัครสมาชิกสำเร็จ');
 
         // กลับหน้า Login
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
       },
 
       error: (err) => {

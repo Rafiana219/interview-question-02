@@ -1,6 +1,6 @@
 module github.com/Rafiana219/interview-question-02/back-IT-02
 
-go 1.26.4
+go 1.25
 
 require (
 	github.com/gin-gonic/gin v1.12.0
