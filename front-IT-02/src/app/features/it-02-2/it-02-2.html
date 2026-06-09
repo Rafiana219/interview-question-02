@@ -1,0 +1,104 @@
+<div class="w-full flex justify-center bg-green-500 p-8 border-t-8">
+    <div class="text-center">
+        <h1 class='text-3xl font-bold text-gray-800'>IT-02-2</h1>
+    </div>
+  </div>
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+  <div class="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
+
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800">
+        สมัครสมาชิก
+      </h1>
+      <p class="text-gray-500 mt-2">
+        สร้างบัญชีผู้ใช้งานใหม่
+      </p>
+    </div>
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-5">
+
+      <!-- Username -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Username
+        </label>
+
+        <input
+          type="text"
+          formControlName="username"
+          class="w-full border border-gray-300 rounded-lg px-4 py-3"
+          placeholder="กรอก Username">
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Password
+        </label>
+
+        <input
+          type="password"
+          formControlName="password"
+          class="w-full border border-gray-300 rounded-lg px-4 py-3"
+          placeholder="กรอกรหัสผ่าน">
+      </div>
+
+      <!-- Confirm Password -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Confirm Password
+        </label>
+
+        <input
+          type="password"
+          formControlName="confirmPassword"
+          class="w-full border border-gray-300 rounded-lg px-4 py-3 "
+          placeholder="ยืนยันรหัสผ่าน">
+      </div>
+
+      <!-- Password Not Match -->
+      <div
+        *ngIf="passwordNotMatch"
+        class="bg-red-100 text-red-600 p-3 rounded-lg">
+
+        Password และ Confirm Password ไม่ตรงกัน
+
+      </div>
+
+      <!-- Error -->
+      <div
+        *ngIf="errorMessage"
+        class="bg-red-100 text-red-600 p-3 rounded-lg">
+
+        {{ errorMessage }}
+
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="registerForm.invalid || loading"
+        class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg cursor-pointer">
+
+        {{ loading ? 'กำลังสมัครสมาชิก...' : 'สมัครสมาชิก' }}
+
+      </button>
+
+    </form>
+
+    <div class="mt-6 text-center">
+      <button
+        type="button"
+        (click)="goToLogin()"
+        class="text-blue-600 hover:text-blue-700 cursor-pointer">
+
+        กลับไปหน้า Login
+
+      </button>
+    </div>
+
+  </div>
+</div>

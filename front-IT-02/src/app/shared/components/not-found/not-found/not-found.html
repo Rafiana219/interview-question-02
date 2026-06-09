@@ -1,0 +1,25 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+  <div class="max-w-lg w-full text-center">
+    <!-- 404 -->
+    <div class="mb-8 relative">
+      <h1 class="text-9xl font-bold text-red-500">404</h1>
+    </div>
+
+    <!-- Text content -->
+    <h2 class="text-3xl font-bold text-gray-800 mb-4">ไม่พบหน้าที่คุณต้องการ</h2>
+    <p class="text-lg text-gray-600 mb-8">
+      หน้าที่คุณกำลังมองหาอาจถูกลบไปแล้ว เปลี่ยนชื่อ หรือไม่มีอยู่ในระบบ
+    </p>
+
+    <!-- Action buttons -->
+    <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+      <a routerLink="/" class="px-5 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-blue-700 transition duration-200 shadow-md hover:shadow-lg">
+        กลับไปยังหน้าหลัก
+      </a>
+      <button (click)="goBack()" class="px-5 py-3 bg-white text-blue-600 font-medium rounded-lg border border-blue-200 hover:bg-blue-50 transition duration-200 shadow-sm hover:shadow-md">
+        ย้อนกลับ
+      </button>
+    </div>
+
+  </div>
+</div>
