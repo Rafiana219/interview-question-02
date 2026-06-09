@@ -36,3 +36,10 @@ IT-02
 │
 ├── docker-compose.yml
 └── README.md
+```
+
+## How to run
+docker
+```bash
+docker compose up --build
+```
