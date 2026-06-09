@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/Rafiana219/interview-question-02/back-IT-02/internal/config"
-	"github.com/Rafiana219/interview-question-02/back-IT-02/internal/handlers"
 	"github.com/Rafiana219/interview-question-02/back-IT-02/internal/routes"
 
 	"github.com/gin-gonic/gin"
@@ -43,6 +42,6 @@ func main() {
 
 	routes.SetupRoutes(r)
 
-	r.GET("/test", handlers.TestAPI)
+	// r.GET("/test", handlers.TestAPI)
 	r.Run(":8080")
 }
