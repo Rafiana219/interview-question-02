@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -24,6 +24,7 @@ export class It022 implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -86,6 +87,9 @@ export class It022 implements OnInit {
         this.errorMessage =
           err.error?.message ||
           'สมัครสมาชิกไม่สำเร็จ';
+
+                
+        this.cdr.detectChanges();
       }
     });
 }
