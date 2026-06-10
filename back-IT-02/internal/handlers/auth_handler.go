@@ -3,14 +3,22 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/Rafiana219/interview-question-02/back-IT-02/internal/config"
-	"github.com/Rafiana219/interview-question-02/back-IT-02/internal/models"
-	"github.com/Rafiana219/interview-question-02/back-IT-02/internal/utils"
+	"github.com/Rafiana219/interview-question-02/back-IT-02/internal/repositories"
+	"github.com/Rafiana219/interview-question-02/back-IT-02/internal/services"
 
 	"github.com/gin-gonic/gin"
 )
 
+var authService = services.NewAuthService(
+	repositories.NewUserRepository(),
+)
+
 type RegisterRequest struct {
+	Username string `json:"username" binding:"required,min=3,max=50"`
+	Password string `json:"password" binding:"required,min=6,max=100"`
+}
+
+type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
@@ -31,20 +39,25 @@ func Register(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "invalid request",
+			"message": err.Error(),
 		})
 
 		return
 	}
 
-	hash, _ := utils.HashPassword(req.Password)
+	err := authService.Register(
+		req.Username,
+		req.Password,
+	)
 
-	user := models.User{
-		Username: req.Username,
-		Password: hash,
+	if err != nil {
+
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+
+		return
 	}
-
-	config.DB.Create(&user)
 
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "register success",
@@ -62,38 +75,31 @@ func Register(c *gin.Context) {
 // @Router /auth/login [post]
 func Login(c *gin.Context) {
 
-	var req RegisterRequest
+	var req LoginRequest
 
-	c.ShouldBindJSON(&req)
+	if err := c.ShouldBindJSON(&req); err != nil {
 
-	var user models.User
-
-	result := config.DB.
-		Where("username = ?", req.Username).
-		First(&user)
-
-	if result.Error != nil {
-
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "invalid username",
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
 		})
 
 		return
 	}
 
-	if !utils.CheckPassword(
-		user.Password,
-		req.Password,
-	) {
+	token, err :=
+		authService.Login(
+			req.Username,
+			req.Password,
+		)
+
+	if err != nil {
 
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "invalid password",
+			"message": err.Error(),
 		})
 
 		return
 	}
-
-	token, _ := utils.GenerateToken(user.ID)
 
 	c.JSON(http.StatusOK, gin.H{
 		"token": token,
@@ -105,17 +111,26 @@ func Profile(c *gin.Context) {
 	userId, exists := c.Get("userId")
 
 	if !exists {
-		c.JSON(401, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "unauthorized",
 		})
 		return
 	}
 
-	var user models.User
+	user, err := authService.GetProfile(
+		userId.(uint),
+	)
 
-	config.DB.First(&user, userId)
+	if err != nil {
 
-	c.JSON(200, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "user not found",
+		})
+
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
 		"username": user.Username,
 	})
 }
