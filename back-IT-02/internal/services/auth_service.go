@@ -26,6 +26,18 @@ func (s *AuthService) Register(
 	password string,
 ) error {
 
+	if len(username) < 3 {
+		return errors.New(
+			"username must be at least 3 characters",
+		)
+	}
+
+	if len(password) < 6 {
+		return errors.New(
+			"password must be at least 6 characters",
+		)
+	}
+
 	existingUser, _ := s.userRepo.FindByUsername(username)
 
 	if existingUser != nil {
