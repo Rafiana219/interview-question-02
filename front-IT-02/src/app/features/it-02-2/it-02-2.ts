@@ -1,26 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './it-02-2.html',
-  styleUrl: './it-02-2.css'
+  styleUrl: './it-02-2.css',
 })
 export class It022 implements OnInit {
-
   registerForm!: FormGroup;
 
   loading = false;
@@ -32,17 +23,15 @@ export class It022 implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
-
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-      confirmPassword: ['', Validators.required]
+      confirmPassword: ['', Validators.required],
     });
-
   }
 
  onSubmit(): void {
@@ -60,11 +49,14 @@ export class It022 implements OnInit {
   if (password !== confirmPassword) {
 
     this.passwordNotMatch = true;
-    return;
+    this.errorMessage = 'รหัสผ่านไม่ตรงกัน';
 
+    return;
   }
 
   this.passwordNotMatch = false;
+  this.errorMessage = '';
+
   this.loading = true;
 
   const payload = {
@@ -82,7 +74,6 @@ export class It022 implements OnInit {
 
         alert('สมัครสมาชิกสำเร็จ');
 
-        // กลับหน้า Login
         this.router.navigate(['/']);
       },
 
@@ -92,18 +83,14 @@ export class It022 implements OnInit {
 
         this.loading = false;
 
-        alert(
+        this.errorMessage =
           err.error?.message ||
-          'สมัครสมาชิกไม่สำเร็จ'
-        );
+          'สมัครสมาชิกไม่สำเร็จ';
       }
     });
 }
 
   goToLogin(): void {
-
     this.router.navigate(['/']);
-
   }
-
 }
