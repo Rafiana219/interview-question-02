@@ -39,7 +39,15 @@ IT-02
 ```
 
 ## How to run
-docker
+docker build
 ```bash
 docker compose up --build
+```
+docker run
+```bash
+docker compose up
+```
+docker close
+```bash
+docker compose down
 ```
