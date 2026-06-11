@@ -9,11 +9,11 @@ import (
 )
 
 type AuthService struct {
-	userRepo *repositories.UserRepository
+	userRepo repositories.IUserRepository
 }
 
 func NewAuthService(
-	userRepo *repositories.UserRepository,
+	userRepo repositories.IUserRepository,
 ) *AuthService {
 
 	return &AuthService{
